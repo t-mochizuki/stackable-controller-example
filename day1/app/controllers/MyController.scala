@@ -7,6 +7,6 @@ import services.MyService
 
 class MyController @Inject() (service: MyService) extends Controller with DBSessionElement {
   def index = StackAction { implicit req =>
-    Ok(service.find)
+    Ok(service.find("Alice"))
   }
 }
