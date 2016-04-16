@@ -6,7 +6,6 @@ import jp.t2v.lab.play2.stackc.{RequestAttributeKey, RequestWithAttributes, Stac
 import settings.DBSettings
 
 import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
 
 trait DBSessionElement extends StackableController {
   self: Controller =>
@@ -15,7 +14,6 @@ trait DBSessionElement extends StackableController {
 
   override def proceed[A](req: RequestWithAttributes[A])
                          (f: RequestWithAttributes[A] => Future[Result]): Future[Result] = {
-    // import TxBoundary.Future._
     DBSettings.initialize()
     DB.localTx { session =>
       super.proceed(req.set(DBSessionKey, session))(f)
